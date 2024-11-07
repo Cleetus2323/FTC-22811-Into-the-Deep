@@ -75,6 +75,7 @@ public class MorrisPOVDrive extends LinearOpMode {
     public void runOpMode() {
         double drive;
         double turn;
+        double strafe;
 //        double armRotateTarget = robot.getArmAngle(), armExtendTarget = robot.getArmExtension(); // Initialize arm to current position
 //        double gripper   = 0;
         double aLastTime = 0, bLastTime = 0, xLastTime = 0, yLastTime = 0, rBLastTime = 0, lBLastTime = 0;
@@ -113,10 +114,11 @@ public class MorrisPOVDrive extends LinearOpMode {
 
             ////Mr. Morris: Alternatively we could use right trigger for forward, left trigger for reverse, left_stick_x for turning
             drive = -gamepad1.left_stick_y;
+            strafe = gamepad1.left_stick_x;
             turn  =  gamepad1.right_stick_x;
 
             // Combine drive and turn for blended motion. Use org.firstinspires.ftc.teamcode.RobotHardware class
-            robot.driveRobot(drive, turn);
+            robot.driveRobot(drive, strafe, turn);
 
             // Use gamepad left & right Bumpers to open and close the gripper claw
             // Use the SERVO constants defined in org.firstinspires.ftc.teamcode.RobotHardware class.

@@ -177,23 +177,29 @@ public class RobotHardware {
      * Then sends these power levels to the motors.
      *
      * @param Drive     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-     * @param Turn      Right/Left turning power (-1.0 to 1.0) +ve is CW
+     * @param turn      Right/Left turning power (-1.0 to 1.0) +ve is CW
      */
-    public void driveRobot(double Drive, double Turn) {
+    public void driveRobot(double Drive, double strafe, double turn) {
         // Combine drive and turn for blended motion.
-        double left  = Drive + Turn;
-        double right = Drive - Turn;
+        double leftFront  = Drive + strafe + turn;
+        double LeftRear = Drive - strafe + turn;
+        double rightFront = Drive - strafe - turn;
+        double rightRear = Drive + strafe - turn;
 
         // Scale the values so neither exceed +/- 1.0
-        double max = Math.max(Math.abs(left), Math.abs(right));
+        double max1 = Math.max(Math.abs(leftFront),Math.abs(LeftRear));
+        double max2 = Math.max(Math.abs(rightFront), Math.abs(rightRear));
+        double max = Math.max(Math.abs(max1), Math.abs(max2));
         if (max > 1.0)
         {
-            left /= max;
-            right /= max;
+            leftFront /= max;
+            LeftRear /= max;
+            rightFront /= max;
+            rightRear /= max;
         }
 
         // Use existing function to drive wheels on both sides..
-        setDrivePower(left, right);
+        setDrivePower(leftFront, LeftRear, rightFront, rightRear);
     }
 
     /**
@@ -202,15 +208,15 @@ public class RobotHardware {
      * Mr. Morris: Our robot is 4 wheel drive, but in tank drive configuration the two left wheels
      *             always travel at the same speed and the two right wheels travel at the same speed.
      *
-     * @param leftWheel     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
-     * @param rightWheel    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
+     * @param leftFront     Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
+     * @param rightFront    Fwd/Rev driving power (-1.0 to 1.0) +ve is forward
      */
-    public void setDrivePower(double leftWheel, double rightWheel) {
+    public void setDrivePower(double leftFront, double leftRear, double rightFront, double rightRear) {
         // Output the values to the motor drives.
-        leftFrontDrive.setPower(leftWheel);
-        leftRearDrive.setPower(leftWheel);
-        rightFrontDrive.setPower(rightWheel);
-        rightRearDrive.setPower(rightWheel);
+        leftFrontDrive.setPower(leftFront);
+        leftRearDrive.setPower(leftRear);
+        rightFrontDrive.setPower(rightFront);
+        rightRearDrive.setPower(rightRear);
     }
 
 //    /**

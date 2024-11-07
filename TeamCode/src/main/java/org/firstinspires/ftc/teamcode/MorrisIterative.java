@@ -101,9 +101,9 @@ public class MorrisIterative extends OpMode
         ////Mr. Morris: Alternatively we could use right trigger for forward, left trigger for reverse, left_stick_x for turning
         double drive = -gamepad1.left_stick_y;
         double turn  =  gamepad1.right_stick_x;
-
+        double strafe = gamepad1.left_stick_x;
         // Combine drive and turn for blended motion. Use org.firstinspires.ftc.teamcode.RobotHardware class
-        robot.driveRobot(drive, turn);
+        robot.driveRobot(drive, strafe, turn);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
